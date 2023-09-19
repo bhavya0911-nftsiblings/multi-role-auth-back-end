@@ -31,6 +31,19 @@ export const register = async (req, res, next) => {
     }
 }
 
+export const logOut = async (req, res, next) => {
+    res.status(200)
+    .cookie("token", "", {
+        expire: new Date(Date.now()),
+        sameSite: process.env.NODE_ENV === "DEV" ? "lax" : "none",
+        secure: process.env.NODE_ENV === "DEV" ? false : true,
+    })
+    .json({
+        success: true,
+        user: req.user,
+    })
+}
+
 export const getAllUsers = async (req, res, next) => {
     try {
         let users = await User.find({});
